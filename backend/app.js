@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 
 const feedRoutes = require("./routes/feed");
+const authRoutes = require("./routes/auth");
 
 const MONGODB_URI =
   "mongodb+srv://root:wUkLd5QqMMX7vQgQ@shop.bcjtd.mongodb.net/feeds";
@@ -25,12 +26,15 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (request, file, callback) => {
-  const validMimeType = file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg';
+  const validMimeType =
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg";
   callback(null, validMimeType);
-}
+};
 
 app.use(bodyParser.json());
-app.use(multer({storage, fileFilter}).single('image'));
+app.use(multer({ storage, fileFilter }).single("image"));
 app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use((request, response, next) => {
@@ -47,13 +51,15 @@ app.use((request, response, next) => {
 });
 
 app.use("/feed", feedRoutes);
+app.use("/auth", authRoutes);
 
 app.use((error, request, response, next) => {
   console.log(error);
   const status = error.statusCode;
   const message = error.message;
+  const data = error.data;
 
-  response.status(status).json({ message });
+  response.status(status).json({ message, data });
 });
 
 mongoose
