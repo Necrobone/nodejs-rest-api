@@ -23,9 +23,13 @@ exports.createPost = (request, response, next) => {
     response.status(201).json({
         message: 'Post created successfully!',
         post: {
-            id: new Date().toISOString(),
+            _id: new Date().toISOString(),
             title,
-            content
+            content,
+            creator: {
+                name: 'Necrobone',
+            },
+            createdAt: new Date(),
         }
     })
 };
