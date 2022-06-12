@@ -26,14 +26,20 @@ exports.createPost = (request, response, next) => {
     throw error;
   }
 
+  if (!request.file) {
+    const error = new Error("Validation failed, entered data is incorrect");
+    error.statusCode = 422;
+    throw Error;
+  }
+
   const title = request.body.title;
   const content = request.body.content;
+  const imageUrl = request.file.path.replace("\\" ,"/");
 
   const post = new Post({
     title,
     content,
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+    imageUrl,
     creator: {
       name: "Necrobone",
     },
