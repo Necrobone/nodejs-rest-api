@@ -10,5 +10,6 @@ router.get("/posts", feedController.getPosts);
 router.post("/posts", postFeedValidation(), feedController.createPost);
 router.get("/posts/:id", feedController.getPost);
 router.put("/posts/:id", putFeedValidation(), feedController.updatePost);
+router.delete("/posts/:id", feedController.deletePost);
 
 module.exports = router;
