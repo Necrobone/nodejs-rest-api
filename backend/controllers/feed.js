@@ -198,6 +198,11 @@ exports.deletePost = async (request, response, next) => {
     user.posts.pull(id);
     await user.save();
 
+    io.getIO().emit("posts", {
+      action: "delete",
+      post: id,
+    });
+
     response.status(200).json({
       message: "Post deleted",
     });

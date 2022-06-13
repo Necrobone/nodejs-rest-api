@@ -51,6 +51,9 @@ class Feed extends Component {
         case 'update':
           this.updatePost(data.post);
           break;
+        case 'delete':
+          this.loadPosts();
+          break;
       }
     });
   }
@@ -242,10 +245,7 @@ class Feed extends Component {
       })
       .then((resData) => {
         console.log(resData);
-        this.setState((prevState) => {
-          const updatedPosts = prevState.posts.filter((p) => p._id !== postId);
-          return { posts: updatedPosts, postsLoading: false };
-        });
+        this.loadPosts();
       })
       .catch((err) => {
         console.log(err);
