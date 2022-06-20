@@ -81,25 +81,22 @@ exports.login = async (request, response, next) => {
   }
 };
 
-exports.getStatus = (request, response, next) => {
-  User.findById(request.userId)
-    .then((user) => {
-      if (!user) {
-        const error = new Error("User could not be found");
-        error.statusCode = 404;
-        throw error;
-      }
-
-      response.status(200).json({
-        status: user.status,
-      });
-    })
-    .catch((error) => {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      next(error);
-    });
+exports.getStatus = async (request, response, next) => {
+  try {
+    const user = await User.findById(request.userId);
+    if (!user) {
+      const error = new Error("User not found.");
+      error.statusCode = 404;
+      throw error;
+    }
+    response.status(200).json({ status: user.status });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+    return err;
+  }
 };
 
 exports.updateStatus = (request, response, next) => {
