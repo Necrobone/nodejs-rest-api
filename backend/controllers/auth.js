@@ -77,6 +77,7 @@ exports.login = async (request, response, next) => {
       error.statusCode = 500;
     }
     next(error);
+    return error;
   }
 };
 
