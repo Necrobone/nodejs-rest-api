@@ -78,6 +78,8 @@ exports.createPost = async (request, response, next) => {
         name: user.name,
       },
     });
+
+    return user;
   } catch (error) {
     if (!error.statusCode) {
       error.statusCode = 500;
